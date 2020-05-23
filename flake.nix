@@ -8,35 +8,8 @@
     };
   };
 
-  outputs = { nixpkgs, ... }:
-    let pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    in {
-      defaultPackage.x86_64-linux = pkgs.mkShell {
-        buildInputs = with pkgs;
-          [
-            glslang
-            pkg-config
-            SDL2
-            SDL2_image
-            vulkan-headers
-            vulkan-loader
-            zlib
-          ] ++ (with pkgs.haskellPackages; [
-            cabal-install
-
-            ghcid
-
-            hlint
-            weeder
-
-            hoogle
-
-            hasktags
-            haskdogs
-
-            pretty-simple
-            pretty-show
-          ]);
-      };
-    };
+  outputs = { nixpkgs, ... }: {
+    defaultPackage.x86_64-linux =
+      import ./shell.nix { nixpkgs = nixpkgs.legacyPackages.x86_64-linux; };
+  };
 }
