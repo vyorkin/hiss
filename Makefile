@@ -2,31 +2,33 @@ EXE := hiss
 GHC_OPTIONS := --ghc-options='-ferror-spans -fhide-source-paths' # -fprint-unicode-syntax
 
 dev: all
-	ghcid --command="cabal new-repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
+	ghcid --command="cabal repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
 repl:
-	cabal new-repl $(GHC_OPTIONS)
+	cabal repl $(GHC_OPTIONS)
 
+shell:
+	SHELL=bash nix dev-shell
 all:
-	cabal new-build $(GHC_OPTIONS) all
+	cabal build $(GHC_OPTIONS) all
 run:
-	cabal new-run $(SNAKE)
+	cabal run $(SNAKE)
 clean:
-	cabal new-clean
+	cabal clean
 check:
-	cabal new-check
+	cabal check
 test:
-	cabal new-test
+	cabal test
 docs:
-	cabal new-haddock
+	cabal haddock
 tags:
 	rm -f tags codex.tags
 	codex update --force
 	haskdogs --hasktags-args "-b"
 prof:
-	cabal new-configure --enable-profiling
+	cabal configure --enable-profiling
 noprof:
-	cabal new-configure --disable-profiling
+	cabal configure --disable-profiling
 hoogle:
 	hoogle server --local
 
-.PHONY: dev repl clean all run check test docs tags prof noprof hoogle
+.PHONY: dev repl shell clean all run check test docs tags prof noprof hoogle
