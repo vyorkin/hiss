@@ -22,8 +22,6 @@ executing `make all`.
 
     make run
 
-I have no idea if it runs on Windows or not… sorry.
-
 ## Issues
 
 If you encounter crashes, glitches and other kinds of

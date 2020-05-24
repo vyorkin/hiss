@@ -1,15 +1,12 @@
+
 {
-  description = "A flake for buliding the Hiss game";
+  description = "A flake for Hiss game";
 
-  inputs = {
-    nixpkgs = {
-      type = "indirect";
-      id = "nixpkgs";
-    };
-  };
+  outputs = { self, nixpkgs }: {
 
-  outputs = { nixpkgs, ... }: {
-    defaultPackage.x86_64-linux =
-      import ./shell.nix { nixpkgs = nixpkgs.legacyPackages.x86_64-linux; };
+    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
+
   };
 }

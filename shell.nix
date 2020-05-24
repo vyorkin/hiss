@@ -1,12 +1,21 @@
-{ nixpkgs }:
-
 let
-  pkgs = import ./nix/release.nix { inherit nixpkgs; };
+  nixpkgs = import ./nix/release.nix;
+  native = with nixpkgs; [
+    glslang
+    pkgconfig
+    SDL2
+    SDL2_image
+    vulkan-headers
+    vulkan-loader
+    zlib
+  ];
+  libPath = nixpkgs.lib.makeLibraryPath native;
+in nixpkgs.haskellPackages.shellFor {
+  packages = p: [nixpkgs.haskellPackages.hiss];
 
-in pkgs.haskellPackages.shellFor {
-  packages = p: [pkgs.haskellPackages.hiss];
+  nativeBuildInputs = native;
 
-  buildInputs = with pkgs.haskellPackages; [
+  buildInputs = with nixpkgs.haskellPackages; [
     cabal-install
 
     ghcid
@@ -21,9 +30,10 @@ in pkgs.haskellPackages.shellFor {
 
     pretty-simple
     pretty-show
-  ];
+  ] ++ native;
 
   shellHook = ''
     export CABAL_DIR=${builtins.toString ./.cabal}
+    export LD_LIBRARY_PATH = ${builtins.trace ("LD_LIBRARY_PATH = " + libPath) libPath}
   '';
 }
