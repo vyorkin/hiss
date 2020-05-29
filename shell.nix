@@ -19,8 +19,8 @@ in nixpkgs.haskellPackages.shellFor {
   buildInputs = native;
   # extraLibraries = [nixpkgs.vulkan-headers];
 
-  # export LD_LIBRARY_PATH = ${libPath}
-  shellHook = ''
-    export CABAL_DIR=${builtins.toString ./.cabal}
-  '';
+  # shellHook = ''
+  #   export CABAL_DIR=${builtins.toString ./.cabal}
+  #   export LD_LIBRARY_PATH = ${libPath}
+  # '';
 }
